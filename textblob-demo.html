@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TextBlob Minimalist Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .container {
+            margin-bottom: 30px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            height: 100px;
+            font-family: inherit;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            border-left: 3px solid #3498db;
+        }
+        .hidden {
+            display: none;
+        }
+        .feature-box {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .feature {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+        .feature:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .code-block {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .tab-container {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            background: none;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            border-bottom: 2px solid #3498db;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>TextBlob Minimalist Demo</h1>
+    <p>This demo showcases the core functionality of TextBlob, a Python library for processing textual data. Enter text in the box below to analyze it.</p>
+    
+    <div class="container">
+        <textarea id="text-input" placeholder="Enter text here for analysis...">TextBlob is an amazing library for natural language processing in Python. It's super easy to use and quite powerful! I love working with it on my NLP projects. Yesterday was terrible, but today is great.</textarea>
+        <button id="analyze-btn">Analyze Text</button>
+    </div>
+
+    <div class="tab-container">
+        <button class="tab active" data-tab="sentiment">Sentiment</button>
+        <button class="tab" data-tab="pos">Parts of Speech</button>
+        <button class="tab" data-tab="language">Language</button>
+        <button class="tab" data-tab="spellcheck">Spellcheck</button>
+        <button class="tab" data-tab="translate">Translate</button>
+        <button class="tab" data-tab="nouns">Noun Phrases</button>
+    </div>
+
+    <div id="sentiment" class="tab-content active">
+        <h2>Sentiment Analysis</h2>
+        <p>TextBlob can analyze the sentiment of text, returning polarity (negative to positive, -1.0 to 1.0) and subjectivity (objective to subjective, 0.0 to 1.0).</p>
+        <div class="code-block">
+            from textblob import TextBlob<br>
+            blob = TextBlob("TextBlob is amazing!")<br>
+            sentiment = blob.sentiment<br>
+            print(f"Polarity: {sentiment.polarity}, Subjectivity: {sentiment.subjectivity}")
+        </div>
+        <div class="result" id="sentiment-result">
+            <p><strong>Result will appear here after analysis.</strong></p>
+        </div>
+    </div>
+
+    <div id="pos" class="tab-content">
+        <h2>Parts of Speech Tagging</h2>
+        <p>TextBlob can identify parts of speech in text (nouns, verbs, adjectives, etc.).</p>
+        <div class="code-block">
+            from textblob import TextBlob<br>
+            blob = TextBlob("TextBlob is a simple library for processing text.")<br>
+            pos_tags = blob.tags<br>
+            print(pos_tags)
+        </div>
+        <div class="result" id="pos-result">
+            <p><strong>Result will appear here after analysis.</strong></p>
+        </div>
+    </div>
+
+    <div id="language" class="tab-content">
+        <h2>Language Detection</h2>
+        <p>TextBlob can detect the language of a text sample.</p>
+        <div class="code-block">
+            from textblob import TextBlob<br>
+            blob = TextBlob("Bonjour, comment ça va?")<br>
+            language = blob.detect_language()<br>
+            print(f"Detected language: {language}")
+        </div>
+        <div class="result" id="language-result">
+            <p><strong>Result will appear here after analysis.</strong></p>
+        </div>
+    </div>
+
+    <div id="spellcheck" class="tab-content">
+        <h2>Spelling Correction</h2>
+        <p>TextBlob offers simple spelling correction functionality.</p>
+        <div class="code-block">
+            from textblob import TextBlob<br>
+            blob = TextBlob("I havv a spelling mistike.")<br>
+            corrected = blob.correct()<br>
+            print(f"Corrected text: {corrected}")
+        </div>
+        <div class="result" id="spellcheck-result">
+            <p><strong>Result will appear here after analysis.</strong></p>
+        </div>
+    </div>
+
+    <div id="translate" class="tab-content">
+        <h2>Translation</h2>
+        <p>TextBlob can translate text between different languages (using Google Translate API).</p>
+        <div class="code-block">
+            from textblob import TextBlob<br>
+            blob = TextBlob("Hello, how are you?")<br>
+            translated = blob.translate(to='es')<br>
+            print(f"Translated text: {translated}")
+        </div>
+        <div class="result" id="translate-result">
+            <p><strong>Result will appear here after analysis.</strong></p>
+        </div>
+    </div>
+
+    <div id="nouns" class="tab-content">
+        <h2>Noun Phrase Extraction</h2>
+        <p>TextBlob can extract noun phrases from text.</p>
+        <div class="code-block">
+            from textblob import TextBlob<br>
+            blob = TextBlob("The quick brown fox jumps over the lazy dog.")<br>
+            noun_phrases = blob.noun_phrases<br>
+            print(f"Noun phrases: {noun_phrases}")
+        </div>
+        <div class="result" id="nouns-result">
+            <p><strong>Result will appear here after analysis.</strong></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Server-Side Implementation</h2>
+        <p>Here's the Python code you would need for a Flask server to implement this functionality:</p>
+        <div class="code-block">
+from flask import Flask, request, jsonify
+from textblob import TextBlob
+import json
+
+app = Flask(__name__)
+
+@app.route('/analyze', methods=['POST'])
+def analyze():
+    data = request.get_json()
+    text = data.get('text', '')
+    
+    if not text:
+        return jsonify({'error': 'No text provided'}), 400
+        
+    blob = TextBlob(text)
+    
+    # Sentiment analysis
+    sentiment = blob.sentiment
+    
+    # Parts of speech
+    pos_tags = [(word, pos) for word, pos in blob.tags]
+    
+    # Language detection
+    try:
+        language = blob.detect_language()
+    except:
+        language = "Unable to detect"
+    
+    # Spell check
+    try:
+        corrected = str(blob.correct())
+    except:
+        corrected = "Spell check unavailable"
+    
+    # Translation (to Spanish as example)
+    try:
+        translated = str(blob.translate(to='es'))
+    except:
+        translated = "Translation unavailable"
+    
+    # Noun phrases
+    noun_phrases = list(blob.noun_phrases)
+    
+    result = {
+        'sentiment': {
+            'polarity': sentiment.polarity,
+            'subjectivity': sentiment.subjectivity
+        },
+        'pos_tags': pos_tags,
+        'language': language,
+        'corrected': corrected,
+        'translated': translated,
+        'noun_phrases': noun_phrases
+    }
+    
+    return jsonify(result)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Installation Requirements</h2>
+        <div class="code-block">
+pip install flask textblob
+python -m textblob.download_corpora
+        </div>
+    </div>
+
+    <script>
+        // This is a mock implementation for demonstration purposes
+        // In a real application, you would send the text to your backend (Flask server)
+        document.getElementById('analyze-btn').addEventListener('click', function() {
+            const text = document.getElementById('text-input').value;
+            
+            // Mock analysis results
+            const results = {
+                sentiment: {
+                    polarity: 0.45,
+                    subjectivity: 0.65
+                },
+                pos_tags: [
+                    ["TextBlob", "NNP"],
+                    ["is", "VBZ"],
+                    ["an", "DT"],
+                    ["amazing", "JJ"],
+                    ["library", "NN"],
+                    ["for", "IN"],
+                    ["natural", "JJ"],
+                    ["language", "NN"],
+                    ["processing", "NN"]
+                ],
+                language: "en",
+                corrected: text,
+                translated: "TextBlob es una biblioteca increíble para el procesamiento del lenguaje natural en Python. ¡Es súper fácil de usar y bastante potente! Me encanta trabajar con él en mis proyectos de PNL. Ayer fue terrible, pero hoy es genial.",
+                noun_phrases: ["textblob", "amazing library", "natural language processing", "python", "nlp projects"]
+            };
+            
+            // Update sentiment result
+            document.getElementById('sentiment-result').innerHTML = `
+                <p><strong>Polarity:</strong> ${results.sentiment.polarity} (${results.sentiment.polarity > 0 ? 'Positive' : results.sentiment.polarity < 0 ? 'Negative' : 'Neutral'})</p>
+                <p><strong>Subjectivity:</strong> ${results.sentiment.subjectivity} (${results.sentiment.subjectivity > 0.5 ? 'Subjective' : 'Objective'})</p>
+                <p>The text has a ${results.sentiment.polarity > 0.5 ? 'strongly positive' : results.sentiment.polarity > 0 ? 'mildly positive' : results.sentiment.polarity < -0.5 ? 'strongly negative' : results.sentiment.polarity < 0 ? 'mildly negative' : 'neutral'} sentiment.</p>
+            `;
+            
+            // Update POS tagging result
+            let posHTML = '<table style="width:100%; border-collapse: collapse;"><tr><th style="text-align:left; border-bottom:1px solid #ddd;">Word</th><th style="text-align:left; border-bottom:1px solid #ddd;">Part of Speech</th></tr>';
+            results.pos_tags.forEach(tag => {
+                posHTML += `<tr><td style="padding:5px; border-bottom:1px solid #eee;">${tag[0]}</td><td style="padding:5px; border-bottom:1px solid #eee;">${tag[1]}</td></tr>`;
+            });
+            posHTML += '</table>';
+            document.getElementById('pos-result').innerHTML = posHTML;
+            
+            // Update language detection result
+            document.getElementById('language-result').innerHTML = `
+                <p><strong>Detected language:</strong> ${results.language === 'en' ? 'English' : results.language}</p>
+            `;
+            
+            // Update spell check result
+            document.getElementById('spellcheck-result').innerHTML = `
+                <p><strong>Corrected text:</strong> ${results.corrected}</p>
+            `;
+            
+            // Update translation result
+            document.getElementById('translate-result').innerHTML = `
+                <p><strong>Original text:</strong> ${text}</p>
+                <p><strong>Translated to Spanish:</strong> ${results.translated}</p>
+            `;
+            
+            // Update noun phrases result
+            document.getElementById('nouns-result').innerHTML = `
+                <p><strong>Extracted noun phrases:</strong></p>
+                <ul style="margin-top: 5px;">
+                    ${results.noun_phrases.map(np => `<li>${np}</li>`).join('')}
+                </ul>
+            `;
+        });
+
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all tab content
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Show the selected tab content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Trigger initial analysis
+        document.getElementById('analyze-btn').click();
+    </script>
+</body>
+</html>
